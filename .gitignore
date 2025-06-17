@@ -1,0 +1,23 @@
+# Ignorer node_modules dans front-end et back-end
+front-app/node_modules/
+back-app/node_modules/
+
+# Ignorer les fichiers de build et temporaires front-end Angular
+front-app/dist/
+front-app/.angular/
+front-app/.vscode/
+
+# Ignorer fichiers temporaires back-end (Java/Maven/Gradle)
+back-app/target/
+back-app/.idea/
+back-app/*.iml
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environnements secrets
+*.env
