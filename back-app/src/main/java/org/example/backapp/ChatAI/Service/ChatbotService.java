@@ -11,7 +11,7 @@ import java.util.Map;
 @Service
 public class ChatbotService {
     private final String API_URL = "https://api-inference.huggingface.co/models/gpt2-xl";
-    private final String API_KEY = "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";
+
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -22,7 +22,7 @@ public class ChatbotService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("Authorization", "Bearer " + API_KEY);
+        headers.set("Authorization", "Bearer " + "dd");
 
         Map<String, String> request = Map.of("inputs", userMessage);
         HttpEntity<Map<String, String>> entity = new HttpEntity<>(request, headers);
