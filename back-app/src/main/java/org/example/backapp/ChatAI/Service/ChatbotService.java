@@ -11,7 +11,6 @@ import java.util.Map;
 @Service
 public class ChatbotService {
     private final String API_URL = "https://api-inference.huggingface.co/models/gpt2-xl";
-
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
