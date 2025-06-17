@@ -1,0 +1,12 @@
+<div class="notification h-10 w-96">
+    @for (item of notifications; track $index) {
+    @if(senderId){
+        @if(id==item.id){
+          <div class="">
+            <h1>Titre: {{ item.titre }}</h1>
+            <p>Message: {{ item.message }} le {{ item.timestamp }}</p>
+          </div>
+        }
+    }
+}
+</div>

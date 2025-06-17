@@ -1,0 +1,21 @@
+<div class="backdrop-blur-sm">
+   <h1>Total: <span class="text-2xl text-orange-600 font-bold "
+    >{{ tabhisto.length }}</span></h1> 
+    @for (item of  tabhisto; track $index) {
+        <div class="border border-gray-700 w-full p-5 rounded-lg mt-2 hover:bg-gray-900">
+          <h1 class="text-xl text-white font-bold">
+            <div class="flex">
+            <lucide-icon name="Clock"></lucide-icon> <h1>{{item.historique}} le {{ item.dateInsertion | date:'dd/MM/yyyy HH:mm' }}</h1>
+        </div>
+      
+        <button class="bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200"
+(click)="DeleteHisto(item.id)"
+style="float: right;margin-top:-30px"
+>
+    <lucide-icon name="trash"></lucide-icon>
+</button>
+          </h1>
+        </div>
+    }
+   
+</div>

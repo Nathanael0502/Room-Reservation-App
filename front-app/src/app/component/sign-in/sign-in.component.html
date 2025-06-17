@@ -1,0 +1,69 @@
+
+<div class=" login w-screen h-screen  flex justify-center items-center min-h-screen  backdrop-blur-sm  bg-cover bg-center bg-no-repeat">
+  <div class="modal ">
+  <div class= " p-8 rounded-lg backdrop-blur-sm h-150 shadow-lg w-full sm:w-140 form-container">
+    <h1 class="text-red-500" *ngIf="testChamp">Erreur de saisie</h1>
+      <h2 class="text-2xl font-semibold text-center text-white mb-6">Inscription</h2>
+      
+      <form style="display: flex;" (submit)="sendData()">
+         <div class="droite" >
+          <div class="mb-3">
+            <label for="Nom" class="block text-white">Nom</label>
+            <input type="text" id="nom" name="nom" [(ngModel)]="datasers.nom"
+                class="w-full px-4 text-white py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="Randrianjafy" required>
+        </div>
+        <div class="mb-3">
+          <label for="prenom" class="block text-white">Prenom</label>
+          <input type="text" id="prenom" name="prenom" [(ngModel)]="datasers.prenom"
+              class="sm:w-60 w-full text-white px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              placeholder="Nathanaël" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="block text-white">Adresse e-mail</label>
+        <input type="email" id="email" name="email" [(ngModel)]="datasers.email"
+            class="w-full px-4 py-2 border text-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            placeholder="natha@gmail.com" required>
+    </div>
+          <div class="mb-3">
+              <label for="password"  class="block text-white">Mot de passe</label>
+              <input type="password" id="password" name="password" [(ngModel)]="datasers.password"
+                  class=" w-full px-4 text-white py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="********" required>
+          </div>
+          <button type="submit"
+              class="w-full bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200">
+             Crée le compte
+          </button>
+        </div>
+        <div class="gauche" style="margin-left: 20px;">
+          <div class="mb-3">
+            <label for="telephone"  class="block text-white sm:w-60">Telephone</label>
+            <input type="text" id="telephone" name="telephone" [(ngModel)]="datasers.telephone"
+                class="w-full px-4 py-2 border text-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="+261338767890" required>
+        </div><br>
+        <div class="mb-3">
+          <label for="photo"  class=" text-white cursor-pointer bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-orange-700 ">
+            Choisir une photo
+          <input type="file" id="photo" name="photo"  accept="image/*"
+              class="hidden" (change)="onSelectedImage($event)"
+        >
+      </label><br><br>
+
+      @if (!datasers.photo) {
+      <p class="block text-gray-600 sm:w-60 text-white" >Aucun image n'a été sélectionner</p>
+      }@else {
+        <p class="block text-white sm:w-60" >A{{photoName}}</p>
+        <img [src]="imagePreview" class="w-60 h-60 rounded-lg " alt="">
+      }
+      </div>
+        </div>
+      </form>
+      <div class="mt-4 text-center">
+        <p class="text-white">Aller à Login ? <a routerLink="/login" class="text-orange-400">Se connecter</a></p>
+    </div>
+  </div>
+</div>
+</div>
+

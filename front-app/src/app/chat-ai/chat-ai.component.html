@@ -1,0 +1,31 @@
+<div class="flex flex-col items-center justify-center min-h-152 p-4 " style="margin-top: -60px;">
+    <h2 class="text-2xl font-bold mb-4 text-white">Chat avec IA</h2>
+    
+    <div class="w-full max-w-lg  shadow-md rounded-lg p-6 backdrop-blur-sm ">
+      <textarea 
+        [(ngModel)]="userMessage" 
+        placeholder="Écris un message..." 
+        class="w-full p-3 border border-gray-900 rounded-md focus:outline-none focus:ring focus:border-orange-500 resize-none h-24"
+      ></textarea>
+      
+      <button 
+        (click)="send()" 
+        class="mt-4 w-full bg-gray-700 hover:bg-gray-900 text-white cursor-pointer
+         font-semibold py-2 rounded-md transition duration-200"
+      >
+        Envoyer
+      </button>
+      
+      <div class="mt-6">
+        <h3 class="text-lg font-semibold text-white">Réponse de l'IA :</h3>
+        <p 
+          *ngIf="aiMessage" 
+          class="mt-2 p-3 bg-gray-100 border border-gray-300 rounded-md text-gray-700"
+        >
+          {{ aiMessage }}
+        </p>
+      </div>
+    </div>
+  </div>
+  
+  

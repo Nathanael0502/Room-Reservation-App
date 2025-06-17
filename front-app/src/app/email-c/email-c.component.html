@@ -1,0 +1,70 @@
+<app-bar-nav></app-bar-nav>
+@if (!isFacture) {
+<div class="max-w-md mx-auto p-4 border border-gray-200 rounded-lg shadow-lg mt-30  bg-white">
+  <button 
+  (click)="isFacture = true"
+  class="w-full bg-orange-500 cursor-pointer text-white font-bold py-2 rounded hover:bg-orange-600">Voir la liste des factures</button>
+    <h3 class="text-xl font-semibold mb-4">Envoyer une facture</h3>
+    <label for="">Choisissez le client</label>
+    <input type="number" [(ngModel)]="idCli" placeholder="Destinataire" 
+        readonly (click)="isShowModalCli = true"   class="w-full p-2 border border-gray-300 rounded mb-2">
+  
+    <input type="file" (change)="onFileSelected($event)" 
+           class="mb-4 cursor-pointer">
+    
+    <button (click)="sendFacture()" 
+            class="w-full bg-orange-500 cursor-pointer text-white font-bold py-2 rounded hover:bg-orange-600">
+      Envoyer
+    </button>
+  
+  </div>
+}
+<div class="liste mt-30">
+ 
+  @if (isFacture) {
+    <button class="bg-gray-500 p-3 hover:bg-gray-600 cursor-pointer rounded text-white" (click)="isFacture=false">Fermer</button>
+    <app-facture [dataFac]="dataFac"></app-facture>
+  }
+</div>
+  <div *ngIf="isShowModalCli" class="modal" (click)="isShowModalCli = false">
+       <div class="modal-content animate rounded-lg p-2">
+        <h2 class="text-2xl font-bold text-gray-700 ">Liste des clients</h2>
+        <div class="flex justify-center items-center w-full " (click)="$event.stopPropagation()">
+         <div class="relative "  >
+         <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+         <input type="text" placeholder="Rechercher par nom ou prenom..." [(ngModel)]="searchText"
+         class="pl-12 pr-4 py-2 w-85 text-gray-500
+          border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+         >
+       </div>
+       </div>
+         <table class="min-w-full text-gray-600 border  "  (click)="$event.stopPropagation()">
+           <thead class="bg-gray-100">
+             <tr class="border border-gray-300 h-10">
+               <th>Nom</th>
+               <th>Prenom</th>
+               <th>Telephone</th>
+               <th>Prix Chambre</th>
+               <th>Rôle</th>
+             </tr>
+           </thead>
+           <tbody>
+            @for (client of filterDataC; track $index) {
+             <tr class="border border-gray-300 h-8">
+               <td>{{client.reservation.client.nom }}</td>
+               <td>{{client.reservation.client.prenom }}</td>
+               <td>{{client.reservation.client.email}}</td>
+               <td>{{client.reservation.client.role}}</td>
+               <td>
+                 <button (click)="ajoutCli(client.reservation.client.id)"
+                 class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 cursor-pointer">
+                   Ajouter
+                 </button>
+               </td>
+             </tr>
+            }
+           </tbody>
+         </table>
+       </div>
+     </div>
+  

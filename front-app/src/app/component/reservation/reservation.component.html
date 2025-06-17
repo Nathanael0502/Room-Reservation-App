@@ -1,0 +1,199 @@
+<app-bar-nav> </app-bar-nav>
+
+
+<div class="p-9 bg-gray-100 min-h-screen flex flex-col items-center mt-10" >
+  <div class="w-full max-w-7xl bg-white rounded-xl shadow-lg p-6">
+    <div class="flex justify-between items-center mb-4" style="margin-top: 20px;">
+<h2 class="text-2xl font-semibold text-gray-700">Liste des réservations</h2>
+<button (click)="isModal = true" class="cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">Ajouter</button>
+
+
+<div class="flex justify-center items-center w-full">
+  <div class="relative">
+  <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+  <input type="text" placeholder="Rechercher par nom ou prenom..." [(ngModel)]="searchText"
+  class="pl-12 pr-4 py-2 w-85 text-gray-500
+   border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+  >
+</div>
+</div>
+<button *ngIf="isLastReservation==false"  (click)="isLastReservation = true" class="cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">Reservation passée</button>
+<button *ngIf="isLastReservation==true" (click)="isLastReservation = false" class="cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">Reservation en cours</button>
+
+<div *ngIf="isModal" class="modal" (click)="CancelBtn()">
+  <div class="modal-content animate rounded-lg p-2">
+<form (submit)="isUpdate?UpdateData(idR):AjoutData()" (click)="$event.stopPropagation()">
+  <div class="mb-4 mt-5" >
+    <label for="numero" class="block text-gray-700">Id Client</label>
+    <input type="number" (click)="isShowModalCli = true"  readonly class="w-full p-2 mt-2 border border-gray-300 rounded" [(ngModel)]="listRModel.client_id" name="clientID"  id="clientID" placeholder="clientID"><br>
+</div>
+<div class="mb-4 mt-5" >
+  <label for="numero" class="block text-gray-700">Id Chambre</label>
+    <input type="number" (click)="isShowModalC = true"   readonly class="w-full p-2 mt-2 border border-gray-300 rounded" [(ngModel)]="listRModel.chambre_id" name="chambreID"  id="chambreID" placeholder="chambreID"><br>
+</div>
+<div class="mb-4 mt-5" >
+  <label for="numero" class="block text-gray-700">Date début</label>
+    <input type="date" [min]="dateActu"   class="w-full p-2 mt-2 border border-gray-300 rounded" [(ngModel)]="listRModel.dateDebut" name="debut" id="debut" placeholder="dateDebut"><br>
+</div>
+<div class="mb-4 mt-5" >
+  <label for="numero" class="block text-gray-700">Date fin</label>
+    <input type="date" [min]="dateActu"  class="w-full p-2 mt-2 border border-gray-300 rounded" name="fin" [(ngModel)]="listRModel.dateFin" id="fin" placeholder="dateFin"><br>
+</div>
+    <button type="submit" class="cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600"
+>{{isUpdate?'Modifier':'Ajouter'}}</button>
+
+</form>
+
+  <button (click)="CancelBtn()"
+  class="cursor-pointer bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+
+</div>
+</div>
+</div>
+<div class="overflow-auto">
+
+<table class="min-w-full border border-gray-300 ">
+  <thead class="bg-gray-10">
+    <tr>
+      <th class="border border-gray-400 px-4 py-2">Id reservation</th>
+      <th class="border border-gray-400 px-4 py-2">Nom Client</th>
+      <th class="border border-gray-400 px-4 py-2">Prenom Client</th>
+      <th class="border border-gray-400 px-4 py-2">Numero chambre</th>
+      <th class="border border-gray-400 px-4 py-2">Debut de location</th>
+      <th class="border border-gray-400 px-4 py-2">Fin de location</th>
+      <th class="border border-gray-400 px-4 py-2">Confirmation
+      </th>
+      <th class="border border-gray-400 px-4 py-2">action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of filterData; track $index) {
+      @if (item.dateFin>=dateActu && !isLastReservation) {
+      <tr class="hover:bg-gray-50">
+        <td class="border border-gray-400 px-4 py-2  text-gray-700" >{{item.id}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.client.nom}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.client.prenom}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.chambre.numero}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.dateDebut}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.dateFin}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.confirmation}}</td>
+        <td class="border border-gray-400 px-4 py-2">
+          <button class="bg-blue-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-blue-600" (click)="showDetail(item.id,item.client.id,item.chambre.id,item.dateDebut,item.dateFin)">M</button>
+          <button class="bg-red-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-red-600" (click)="DeleteData(item.id)">S</button>
+          <button class="bg-green-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-green-600" (click)="ConfirmationReserv(item.id)">Confirmer</button>
+        </td>
+       </tr>  
+      }@if (item.dateFin < dateActu && isLastReservation) {
+         <tr class="hover:bg-gray-50">
+        <td class="border border-gray-400 px-4 py-2  text-gray-700" >{{item.id}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.client.nom}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.client.prenom}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.chambre.numero}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.dateDebut}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.dateFin}}</td>
+        <td class="border border-gray-400 px-4 py-2">{{item.confirmation}}</td>
+        <td class="border border-gray-400 px-4 py-2">
+          <button class="bg-blue-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-blue-600" (click)="showDetail(item.id,item.client.id,item.chambre.id,item.dateDebut,item.dateFin)">M</button>
+          <button class="bg-red-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-red-600" (click)="DeleteData(item.id)">S</button>
+          <button class="bg-green-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-green-600" (click)="RoomDispo(item.chambre.id)">RoomDispo</button>
+        </td>
+       </tr>  
+      }
+    }
+    @if (filterData.length==0) {
+      <h1 class="text-2xl font-bold text-gray-600">Aucun resultat disponible!</h1>
+    }
+  </tbody>
+</table>
+
+</div>
+</div>
+</div>
+
+<!--Modal CLient-->
+@if (isShowModalCli) {
+<div class="modal" (click)="isShowModalCli = false">
+  <div class="modal-content animate rounded-lg p-2">
+   <h2 class="text-2xl font-bold text-gray-700 ">Liste des clients</h2>
+   <div class="flex justify-center items-center w-full" (click)="$event.stopPropagation()">
+    <div class="relative"  >
+    <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+    <input type="text" placeholder="Rechercher par nom ou prenom..." [(ngModel)]="searchText"
+    class="pl-12 pr-4 py-2 w-85 text-gray-500
+     border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+    >
+  </div>
+  </div>
+    <table class="min-w-full text-gray-600 border "  (click)="$event.stopPropagation()">
+      <thead class="bg-gray-100">
+        <tr class="border border-gray-300 h-10">
+          <th>Nom</th>
+          <th>Prenom</th>
+          <th>Telephone</th>
+          <th>Prix Chambre</th>
+          <th>Rôle</th>
+        </tr>
+      </thead>
+      <tbody>
+       @for (client of filterDataC; track $index) {
+        <tr class="border border-gray-300 h-8">
+          <td>{{client.nom }}</td>
+          <td>{{ client.prenom }}</td>
+          <td>{{client.telephone}}</td>
+          <td>{{client.role}}</td>
+          <td>
+            <button (click)="ajoutCli(client.id)"
+            class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 cursor-pointer">
+              Ajouter
+            </button>
+          </td>
+        </tr>
+       }
+      </tbody>
+    </table>
+  </div>
+</div>
+}
+<!--Modal Chambre-->
+@if (isShowModalC) {
+<div class="modal" (click)="isShowModalC = false">
+  <div class="modal-content animate rounded-lg p-2">
+    <div class="flex justify-center items-center w-full" (click)="$event.stopPropagation()">
+      <div class="relative"  >
+      <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+      <input type="text" placeholder="Rechercher par nom ou prenom..." [(ngModel)]="searchText"
+      class="pl-12 pr-4 py-2 w-85 text-gray-500
+       border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+      >
+    </div>
+    </div>
+   <h2 class="text-2xl font-bold text-gray-700 ">Liste des chambres</h2>
+    <table class="min-w-full text-gray-600 border "  (click)="$event.stopPropagation()">
+      <thead class="bg-gray-100">
+        <tr class="border border-gray-300 h-10">
+          <th>Type</th>
+          <th>Numero</th>
+          <th>Prix (Ar)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+       @for (chambre of FilterRooms; track $index) {
+        <tr class="border border-gray-300 h-8">
+          <td>{{chambre.type }}</td>
+          <td>{{  chambre.numero  }}</td>
+          <td>{{chambre.prix }}</td>
+          <td>
+            <button (click)="ajouC(chambre.id)"
+            class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 cursor-pointer">
+              Ajouter
+            </button>
+          </td>
+        </tr>
+       }
+      </tbody>
+    </table>
+  </div>
+</div>
+}
+

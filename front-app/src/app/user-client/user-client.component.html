@@ -1,0 +1,376 @@
+<nav class="bg-gray-900 p-4 shadow-md fixed top-0 left-0  w-full ">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+      <div class="relative flex">
+        @if (!clientData.photo) {
+          <img 
+           (click)="varDetailCli = true"
+          src="images/vecteezy_green-meadow-and-cloudy-skies-panoramic-view-3d-illustration_2097796.jpg" alt="PDP" class="w-10 h-10 rounded-full border-2 border-orange-500 cursor-pointer">
+          }@else {
+            <img [src]="'http://localhost:8080/api/client/image/'+clientData.photo.replace('uploadClient/','')" alt="PDP" class="w-10 h-10 rounded-full border-2 border-orange-500 cursor-pointer"
+             (click)="varDetailCli = true"
+            >
+          }
+          <h1 class="text-xl text-white font-semibold">{{clientData.nom+"   "+clientData.prenom}}</h1>
+      </div>
+      <h1 class="text-orange-500 text-xl font-semibold">Gestion d'Hôtel</h1>
+      
+
+      <a routerLink="/chatMess" 
+    
+      class="flex bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 ml-4 cursor-pointer"
+
+      >
+      <lucide-icon name="MessageCircle" [size]="18"></lucide-icon>
+      Chat</a>
+      <button 
+    
+      class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 ml-4 cursor-pointer"
+        (click)="logOut()"
+      >Deconnexion</button>
+    </div>
+
+  </nav>
+  <div class="flex" style="overflow: hidden;">
+  <div class="w-55 bg-gray-900 bg-opacity-90 p-6 flex flex-col mt-19 shadow-md shadow-gray-500 rounded" style="position: fixed;">
+     <h1 class=" text-2xl font-bold mb-6 text-align-center text-orange-500">Menu</h1>
+     <ul class="li text-white">
+        <li class="flex items-center p-2  hover:text-orange-600  rounded cursor-pointer"  
+        [ngClass]="navigColor?'bg-orange-600 hover:text-white ':''"
+        (click)="navigateTo('Accueil')"
+        >
+            <lucide-icon name="Home"></lucide-icon><span class="ml-1">Accueil</span>
+        </li>
+        <li class="flex items-center p-2 hover:text-orange-600  rounded cursor-pointer" 
+        [ngClass]="navigColor1?'bg-orange-600 hover:text-white':''"
+         (click)="navigateTo('Chambres')"
+        >
+            <lucide-icon name="Bed"></lucide-icon><span class="ml-1">Chambres</span>
+        </li>
+        <li class="flex items-center p-2 hover:text-orange-600  rounded cursor-pointer" 
+        [ngClass]="navigColor2?'bg-orange-600 hover:text-white':''"
+       (click)="navigateTo('Reservations')"
+        >
+            <lucide-icon name="Calendar"></lucide-icon><span class="ml-1">Reservations</span>
+        </li>
+        <li class="flex items-center p-2 hover:text-orange-600  rounded cursor-pointer" 
+        [ngClass]="navigColor3?'bg-orange-600 hover:text-white':''"
+        (click)="navigateTo('Notifications')"
+        >
+            <lucide-icon name="Bell"></lucide-icon><span class="ml-1">Notifications</span>
+        </li>
+        <li class="flex items-center p-2 hover:text-orange-600  rounded cursor-pointer"  
+         [ngClass]="navigColor4?'bg-orange-600 hover:text-white':''"
+        (click)="navigateTo('Paiements')"
+        >
+            <lucide-icon name="CreditCard"></lucide-icon><span class="ml-1">Paiements</span>
+        </li>
+        <li class="flex items-center p-2 hover:text-orange-600 rounded cursor-pointer"  
+        (click)="navigateTo('ChatAI')"
+         [ngClass]="navigColor5?'bg-orange-600 hover:text-white':''"
+        >
+            <lucide-icon name="ChartLine"></lucide-icon><span class="ml-1">Statistiques</span>
+        </li>
+        <li class="flex items-center p-2 hover:text-orange-600  rounded cursor-pointer" 
+         [ngClass]="navigColor6?'bg-orange-600 hover:text-white':''"
+        (click)="navigateTo('Historiques')"
+        >
+            <lucide-icon name="Clock"></lucide-icon><span class="ml-1">Historiques</span>
+        </li>
+     </ul>
+  </div>
+  <div class="ecran mt-19 shadow-md shadow-gray-500 ml-55 w-284 h-152">
+<div class="modal text-white" >
+
+
+    @switch (lien) {
+    @case ('Accueil') {
+      @if (!varFact) {
+      <div class="content">
+        <h1 class="h1 text-white text-6xl font-bold mt-10" style="text-align: center;">
+          <span class="word">Salut {{clientData.prenom}}</span><br>
+          <span  class="word">!</span><br>
+          <span  class="word">Nous sommes ravis</span><br>
+          <span  class="word">De</span><br>
+          <span  class="word">Vous revoir</span><br>
+        </h1>
+     <button class="ml-2 w-14 h-14 flex items-center justify-center rounded-full bg-orange-500 text-white 
+     hover:bg-orange-600 hover:w-16 hover:h-16 cursor-pointer
+     "   (click)="varFact = true">
+     <h1 class="text-2xl font-bold" >{{ tabCli.length }}</h1>
+      <lucide-icon name="Text" [size]="24"></lucide-icon>
+    </button>
+    </div>
+  }@else{
+    <div class=" backdrop-blur-sm items-center  justify-center animate">
+      <button  class="bg-orange-600  p-5 ml-2
+       cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200"
+     (click)="varFact = false"
+       style="position:absolute"
+     > Quitter
+    </button>
+          <app-facture-cli></app-facture-cli>
+    </div>
+  }
+  
+}
+@case ('Chambres') {
+  @if( tabChambre.length!=0){
+    
+    <h1 class="text-white text-2xl" style="margin-top: -30px;">Listes des chambres disponibles</h1>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" style="overflow:auto;">
+  <div class="modalT" *ngIf="varNotes">
+    <div class="cot h-screen  flex justify-center items-center  backdrop-blur-sm  bg-cover bg-center bg-no-repeat">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-140 form-container" style="overflow: auto;">
+      <button class="w-full bg-gray-400 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200"
+      (click)="varNotes = false "
+      >
+       Annuler
+      </button>
+        <h1 class="text-2xl font-bold text-gray-700">Ecrire une note ...</h1>
+        <textarea name="notes" id="notes" [(ngModel)]="notes" class="border border-gray-500 text-gray-800"></textarea>
+        <button  class=" bg-orange-400 cursor-pointer text-white  p-1 rounded-md hover:bg-orange-700 transition duration-200"
+        (click)=" ajoutNotes()"
+        ><lucide-icon name="plus"></lucide-icon></button><br>
+        @for (item of  tabNotes; track $index) {
+          @if (item.notes !="" && item.chambre.id===dataC.id) {
+        <div class="flex mt-2">
+          <img [src]="'http://localhost:8080/api/client/image/'+item.client.photo.replace('uploadClient/','')" class="w-10 h-10 rounded-full" 
+          
+          alt="">
+          <h1 class="text-gray-700 font-bold mr-7">{{item.client.nom+"  "+item.client.prenom}}</h1>
+          
+          <p  
+           class="text-gray-700 mr-10">{{ item.notes }}</p>
+        
+          @if (item.client.id===id) {
+            <button
+            class="
+             bg-orange-400 cursor-pointer text-white  rounded-md hover:bg-orange-700 transition duration-200 w-6 h-10"
+          (click)="deleteNotes(item.id)" style="margin-top: -10px;"
+            ><lucide-icon name="trash" ></lucide-icon></button>
+          }
+        
+          <br>
+        </div>
+      }
+      }
+    </div>
+    </div>
+  </div>
+  @for (chambre of  tabChambre; track $index) {
+    <div class="chb bg-white shadow-md rounded-lg overflow-hidden">
+      <img [src]="'http://localhost:8080/api/chambres/image/'+chambre.imagePath.replace('uploadChambre/','')" alt="Chambre" class="w-full h-48 object-cover">
+      <div class="p-4">
+       
+        <h2 class="text-lg font-semibold text-gray-700">Type: {{ chambre.type }}</h2>
+        <p class="text-gray-600">Numéro: {{ chambre.numero }}</p>
+        <p class="text-gray-700 font-bold">Prix: {{ chambre.prix }} Ar / jour</p>
+        <h1 
+        (click)="showNotesS(chambre.id)"
+        class="text-gray-700 cursor-pointer hover:text-orange-500 mb-2" style="border-bottom: 1px solid gray;">Noter</h1>
+      @if(stb){
+        <div class="modalT" >
+          <div class="cot h-screen  flex justify-center items-center  backdrop-blur-sm  bg-cover bg-center bg-no-repeat">
+          <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-140 form-container">
+            <h2 class="text-gray-800 font-bold text-xl">Noter</h2>
+            <app-star-rating [(rating)]="i" class="mb-3" (ratingChange)="addUpdateRating(bb,i)"> </app-star-rating>
+  
+        <button class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700  cursor-pointer"
+        style="margin-left:-7px ;"
+       (click)="Close()"
+       >
+        Ok</button>
+      </div>
+    </div>
+  </div>
+      
+      
+      } 
+      @if(tabStars.length!=0){
+          
+        @for (item of tabStars; track $index) {
+          @if(item.stars!==null){
+              @if(chambre.id==item.chambre.id  && item.client.id==id){
+              <app-star-rating [(rating)]="item.stars" class="mb-3" (ratingChange)="addUpdateRating(chambre.id,item.stars)"> </app-star-rating>
+           
+            }
+          }
+           
+            
+          
+        }
+      }
+        <div class="flex mt-2">
+        <button class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700  cursor-pointer"
+         style="margin-left:-7px ;"
+        (click)="showReser(chambre.id)"
+        >
+         Réserver</button>
+         <button class="bg-orange-600 ml-2 text-white px-4 py-2 rounded hover:bg-orange-700  cursor-pointer"
+         (click)="AfficheNotes(chambre.id,chambre.type,chambre.numero,chambre.prix,chambre.imagePath)"
+         style="margin-left: 2px;"
+         >
+             Info
+         </button>
+         <button class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700  cursor-pointer"
+         (click)="showEntryNote(chambre.id,0)"
+         style="margin-left: 7px;"
+          >
+              Notes
+          </button>
+        </div>
+         <div class="modalT" *ngIf="varReserv">
+          <div class="cot h-screen  flex justify-center items-center  backdrop-blur-sm  bg-cover bg-center bg-no-repeat">
+            <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-144 form-container">
+              <h1 class="text-red-500" *ngIf="varError">Erreur de saisie</h1>
+              <h1 class="text-2xl text-gray-900 font-bold">Veuillez complétez les champs</h1>
+             <form style="display: flex;" (submit)="AjoutData()" >
+              <div class="mb-3">
+                <label for="Nom" class="block text-gray-600">Date début</label>
+                <input type="date" id="debut" name="debut" [(ngModel)]="DateDebut" [min]="dateActu"
+
+                    class="w-full px-4 py-2  cursor-pointer text-gray-800 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="Date" required>
+            </div>
+            <div class="mb-3">
+              <label for="Nom" class="block text-gray-600">Date fin</label>
+              <input type="date" id="fin" name="fin" [(ngModel)]="DateFin" [min]="dateActu"
+                  class="w-full px-4 py-2  text-gray-800 cursor-pointer border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Date Fin" required>
+          </div>
+          <div class="flex">
+            <button class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700 ml-4 cursor-pointer"  type="submit">
+              Réserver</button>
+              <button type="button" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-red-700 ml-4 cursor-pointer"
+              (click)=" cancelReserv($event)"
+              >Fermer</button>
+          </div>
+               </form>
+            </div>
+          </div>
+      
+         </div>
+       
+      </div>
+    
+  
+    </div>
+  }
+    </div>
+  }@else {
+    <h3 class="text-xl">!--Listes des chambres vides--!</h3>
+    
+  }
+}
+@case ('Reservations') {
+<h1 class="text-white text-2xl font-bold">Reservations</h1>
+<app-reserv-cli></app-reserv-cli>
+}
+@case ('Notifications') {
+  <h1 class="text-white text-2xl font-bold">Notifications</h1>
+  
+<app-notification></app-notification>
+}
+@case ('Paiements') {
+  <h1 class="text-white text-2xl font-bold">Liste de vos Paiements</h1>
+  <app-pay-cli></app-pay-cli>
+}
+@case ('ChatAI') {
+  <h1 class="text-white text-2xl font-bold mb-2" style="margin-top: -30px;">Statistiques</h1>
+  <app-data-stat></app-data-stat>
+
+}
+@case ('Historiques') {
+  <h1 class="text-white text-2xl font-bold">historiques</h1>
+  <app-historiques></app-historiques>
+}
+}
+
+</div>
+  </div>
+</div>
+
+<!--Detail-->
+@if (varDetailCli) {
+<div class="modalT">
+<div class="cot h-screen  flex justify-center items-center  backdrop-blur-sm  bg-cover bg-center bg-no-repeat">
+  <div class= "bg-white p-8 rounded-lg shadow-lg w-full sm:w-140 form-container">
+      <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Informations sur Vous</h2>
+      <form style="display: flex;" (submit)="updateCli()" >
+         <div class="droite" >
+          <div class="mb-3">
+            <label for="Nom" class="block text-gray-600">Nom</label>
+            <input type="text" id="nom" name="nom" [(ngModel)]="clientData.nom"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="Randrianjafy" required>
+        </div>
+        <div class="mb-3">
+          <label for="prenom" class="block text-gray-600">Prenom</label>
+          <input type="text" id="prenom" name="prenom" [(ngModel)]="clientData.prenom"
+              class="sm:w-60 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+              placeholder="Nathanaël" required>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="block text-gray-600">Adresse e-mail</label>
+        <input type="email" id="email" name="email" [(ngModel)]="clientData.email"
+            class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+            placeholder="natha@gmail.com" required>
+    </div>
+          <button type="submit"
+              class="w-full bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200">
+             Modifier
+          </button>
+        </div>
+        <div class="gauche" style="margin-left: 20px;">
+          <div class="mb-3">
+            <label for="telephone"  class="block text-gray-600 sm:w-60">Telephone</label>
+            <input type="text" id="telephone" name="telephone" [(ngModel)]="clientData.telephone"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="+261338767890" required>
+        </div><br>
+        <div class="mb-3">
+          <label for="photo"  class="block text-gray-600 sm:w-60">
+            Choisir une photo
+          <input type="file" id="photo" name="photo" class="cursor-pointer w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" accept="image/*"
+               (change)="onSelectedImage($event)"
+        >
+      </label><br><br>
+
+      @if (!clientData.photo) {
+      <p class="block text-gray-600 sm:w-60" >Aucun image</p>
+      }@else {
+      
+        <img [src]="'http://localhost:8080/api/client/image/'+clientData.photo.replace('uploadClient/','')"  class="w-60 h-60 rounded-lg " alt="">
+      }
+      </div>
+        </div>
+      </form>
+      <div class="mt-4 text-center">
+        <p class="text-gray-600"  (click)="varDetailCli = false" class="w-full bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-20">Quitter</p>
+    </div>
+  </div>
+</div>
+</div>
+}
+<!--Detail-->
+
+<!--DetailsChambre-->
+<div class="modalT" *ngIf="showNotes">
+  <div class="cot h-screen  flex justify-center items-center  backdrop-blur-sm  bg-cover bg-center bg-no-repeat">
+    <div class= "bg-white p-8 rounded-lg shadow-lg w-full sm:w-140 form-container">
+      <button class="w-full bg-gray-400 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200"
+      (click)="showNotes = false "
+      >
+       Annuler
+      </button>
+      <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Informations sur le chambre</h2>
+       <img [src]="'http://localhost:8080/api/chambres/image/'+dataC.image.replace('uploadChambre/','')" class="w-100 h-60 rounded-md border-2 border-orange-500 cursor-pointer" alt=""><br>
+       <p class="text-gray-800 text-xl"><span class="text-2xl font-semibold">Numero: </span>{{ dataC.numero }}</p>
+       <p class="text-gray-800 text-xl"><span class="text-2xl  font-semibold">Type: </span>{{ dataC.type }}</p>
+       <p class="text-gray-800 text-xl font-bold"><span  class="text-2xl font-semibold">Prix: </span>{{ dataC.prix }} Ar/nuit</p>
+     
+      
+  </div>
+  </div>
+</div>
+<!--DetailsChambre-->

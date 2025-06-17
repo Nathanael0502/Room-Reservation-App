@@ -1,0 +1,32 @@
+<div class="max-w-xl mx-auto p-4">
+    <!-- Bouton Retour -->
+    <button (click)="retourButton()" class="cursor-pointer bg-orange-500 text-white hover:bg-orange-600 px-4 py-2 rounded-md shadow-md transition-all">
+        Retour
+    </button>
+    
+    <!-- Barre de recherche -->
+    <div class="relative mt-4">
+        <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></lucide-angular>
+        <input type="text" placeholder="Rechercher par nom ou prénom..." [(ngModel)]="searchText"
+            class="pl-12 pr-4 py-2 w-full text-gray-700 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500">
+    </div>
+    
+    <!-- Titre -->
+    @for (item of tab; track $index) {
+        @if(item.id==senderId){
+            <h1 class="text-xl font-semibold text-gray-800 mt-6">Choisissez une personne {{ item.nom }} {{ item.prenom }}</h1>
+        }
+    }
+    
+    <!-- Liste des utilisateurs -->
+    <div class="mt-4 space-y-3">
+        @for (item of filterData; track $index) {
+            @if(item.id!=senderId){
+                <a class="flex items-center p-3 bg-white rounded-lg shadow-md hover:bg-gray-100 transition-all" [routerLink]="'/chatMess/'+item.id">
+                    <img class="w-12 h-12 rounded-full object-cover" [src]="'http://localhost:8080/api/client/image/'+item.photo.replace('uploadClient/','')" alt="image">
+                    <p class="ml-4 text-gray-700 font-medium">{{ item.nom }} {{ item.prenom }}</p>
+                </a>
+            }
+        }
+    </div>
+</div>

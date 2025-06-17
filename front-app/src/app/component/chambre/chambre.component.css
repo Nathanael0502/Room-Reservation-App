@@ -1,0 +1,81 @@
+.modal-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.modalC{
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4);
+}
+.modal-enter-active {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.9s ease-out, transform 0.9s ease-out;
+}
+
+.modal-leave {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.modal-leave-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.9s ease-in, transform 0.9s ease-in;
+}
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+.chb{
+  margin-top: 10px;
+}
+.chb:hover{
+margin-left: 10px;
+margin-top: 5px;
+transition: 0.5s;
+}
+@-webkit-keyframes animatezoom {
+  from {-webkit-transform: scale(0)}
+  to {-webkit-transform: scale(1)}
+}
+
+@keyframes animatezoom {
+  from {transform: scale(0)}
+  to {transform: scale(1)}
+}
+ul a{
+  background-color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  color: rgb(78, 76, 76);
+}
+ul a:hover{
+  color: rgb(255, 76, 5);
+  transition: 0.9s;
+}
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav button{
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav button:hover {
+  cursor: pointer;
+  background-color: #ddd;
+  color: black;
+}
+
+/* Create a right-aligned (split) link inside the navigation bar */
+.topnav button.split {
+  float: right;
+  background-color: #04AA6D;
+  color: white;
+}

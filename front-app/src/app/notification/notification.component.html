@@ -1,0 +1,20 @@
+<div class="backdrop-blur-sm">
+  <h1 class="text-white">Total: <span class="text-2xl text-orange-600 font-bold "
+    >{{ tabNotif.length }}</span></h1>
+    @for (item of  tabNotif; track $index) {
+        <div class="border border-gray-700 w-full p-5 rounded-lg mt-2 hover:bg-gray-900">
+          <h1 class="text-xl text-white font-bold">
+            <div class="flex">
+            <lucide-icon class="text-white" name="Bell"></lucide-icon>       
+            <h1>{{item.notification}} le {{ item.notificationDate }} </h1>
+        </div>
+<button class="bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200"
+(click)="deleteNotification(item.id)"
+style="float: right;margin-top:-30px"
+>
+<lucide-icon name="trash"></lucide-icon>
+    </button>
+          </h1>
+        </div>
+    }
+</div>

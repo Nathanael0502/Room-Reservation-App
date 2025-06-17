@@ -1,0 +1,42 @@
+<div class="overflow-auto">
+
+    <table class="min-w-full border border-gray-300 backdrop-blur-sm  ">
+      <thead class="bg-gray-10">
+        <tr class="hover:bg-orange-900 ">
+          <th class="border border-gray-400 px-4 py-2">Id reservation</th>
+          <th class="border border-gray-400 px-4 py-2">Nom Client</th>
+          <th class="border border-gray-400 px-4 py-2">Prenom Client</th>
+          <th class="border border-gray-400 px-4 py-2">Numero chambre</th>
+          <th class="border border-gray-400 px-4 py-2">Debut de location</th>
+          <th class="border border-gray-400 px-4 py-2">Fin de location</th>
+          <th class="border border-gray-400 px-4 py-2">Confirmation
+          </th>
+          <th class="border border-gray-400 px-4 py-2">action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of listR; track $index) {
+          
+            @if (item.client.id==id) {
+                <tr class="hover:bg-gray-900 ">
+                    <td class="border border-gray-400 px-4 py-2 " >{{item.id}}</td>
+                    <td class="border border-gray-400 px-4 py-2">{{item.client.nom}}</td>
+                    <td class="border border-gray-400 px-4 py-2">{{item.client.prenom}}</td>
+                    <td class="border border-gray-400 px-4 py-2">{{item.chambre.numero}}</td>
+                    <td class="border border-gray-400 px-4 py-2">{{item.dateDebut}}</td>
+                    <td class="border border-gray-400 px-4 py-2">{{item.dateFin}}</td>
+                    <td class="border border-gray-400 px-4 py-2">{{item.confirmation}}</td>
+                    <td class="border border-gray-400 px-4 py-2">
+                      <button class="bg-orange-500 text-white px-3 py-1 rounded-lg hover:bg-orange-600" 
+                      (click)=" deleteReservation(item.id)"
+                      >
+                      <lucide-icon name="trash"></lucide-icon>
+                    </button>
+                    </td>
+                   </tr>
+            }
+        }
+      </tbody>
+    </table>
+    
+    </div>

@@ -1,0 +1,357 @@
+<app-bar-nav></app-bar-nav>
+<div class="topnav pt-28">
+  <button (click)="varNav = 'client'">Chambres</button>
+  <button  class="active" (click)="varNav = 'mC'" >Meilleurs chambres</button>
+  <button (click)="varNav='eC'">Etoiles par clients</button>
+  <button (click)="varNav='nC'">Notes par clients</button>
+ 
+
+</div>
+@switch (varNav) {
+  @case ('mC') {
+    <div class="flex justify-center items-center w-full">
+      <!-- Barre de recherche centrée -->
+<div class="flex justify-center items-center w-full mb-6">
+  <div class="relative w-full max-w-md">
+    <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></lucide-angular>
+    <input 
+      type="text" 
+      placeholder="Rechercher par numéro ou type..." 
+      [(ngModel)]="searchText"
+      class="pl-12 pr-4 py-2 w-full text-gray-700 placeholder-gray-400 
+             border border-gray-300 rounded-full shadow-md 
+             focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+    >
+  </div>
+</div>
+
+<!-- Grille des chambres -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+  <div *ngFor="let chambre of getR" 
+       class="transition-transform transform hover:scale-105 bg-white shadow-lg rounded-xl overflow-hidden">
+       
+    <!-- Image de la chambre -->
+    <img 
+      [src]="'http://localhost:8080/api/chambres/image/' + chambre.imagePath.replace('uploadChambre/', '')" 
+      alt="Chambre" 
+      class="w-full h-48 object-cover">
+
+    <!-- Contenu -->
+    <div class="p-4">
+      <h2 class="text-lg font-semibold text-gray-800">{{ chambre.type }}</h2>
+      <p class="text-gray-600">Numéro : {{ chambre.numero }}</p>
+      <p class="text-orange-600 font-bold text-lg">{{ chambre.prix }} Ar / jour</p>
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="px-4 pb-4 flex flex-wrap gap-2 justify-between">
+      <button 
+        (click)="setData(chambre.id, chambre.type, chambre.numero, chambre.prix)" 
+        class="bg-orange-500 text-white px-4 py-1 rounded-full hover:bg-orange-600 transition">
+        Modifier
+      </button>
+      <button 
+        (click)="deleteRoom(chambre.id)" 
+        class="bg-red-500 text-white px-4 py-1 rounded-full hover:bg-red-600 transition">
+        Supprimer
+      </button>
+      <button 
+        (click)="DetailsChambre(chambre.id, chambre.numero, chambre.type, chambre.prix, chambre.imagePath, chambre.disponible)" 
+        class="bg-blue-500 text-white px-4 py-1 rounded-full hover:bg-blue-600 transition">
+        Détails
+      </button>
+    </div>
+  </div>
+</div>
+
+      @if (listBestRooms.length===0) {
+        <h1 class="text-2xl font-bold text-gray-600">Aucun resultat disponible!</h1>
+      }
+      </div>
+  }
+  @case ('eC') {
+    <div class="flex justify-center items-center w-full my-6">
+      <div class="relative w-full max-w-md">
+        <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500"></lucide-angular>
+        <input
+          type="text"
+          placeholder="Rechercher par numéro ou type..."
+          [(ngModel)]="searchText"
+          class="pl-12 pr-4 py-2 w-full text-gray-700 bg-white border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400 transition duration-300"
+        />
+      </div>
+    </div>
+    
+    <h1 class="text-2xl font-bold text-gray-700 mb-6 text-center">Listes des clients, chambres et notes</h1>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4">
+      <div *ngFor="let item of getSt" class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-[1.02] transition duration-300">
+        <div class="flex items-center gap-4 p-4 border-b border-gray-100">
+          <img
+            [src]="'http://localhost:8080/api/client/image/'+item.client.photo.replace('uploadClient/','')"
+            alt="Client"
+            class="w-16 h-16 rounded-full object-cover border border-orange-400"
+          />
+          <div>
+            <h2 class="text-lg font-semibold text-gray-800">{{ item.client.nom }} {{ item.client.prenom }}</h2>
+            <p class="text-sm text-gray-600">{{ item.client.email }}</p>
+            <p class="text-sm text-gray-600">Tél : {{ item.client.telephone }}</p>
+            <p class="text-sm text-gray-500 italic">Rôle : {{ item.client.role }}</p>
+          </div>
+        </div>
+    
+        <img
+          [src]="'http://localhost:8080/api/chambres/image/'+item.chambre.imagePath.replace('uploadChambre/','')"
+          alt="Chambre"
+          class="w-full h-48 object-cover"
+        />
+    
+        <div class="p-4">
+          <h3 class="text-base font-semibold text-gray-800">Chambre {{ item.chambre.numero }} - {{ item.chambre.type }}</h3>
+          <p class="text-sm text-gray-600">Prix : <span class="text-orange-500 font-bold">{{ item.chambre.prix }} Ar / jour</span></p>
+    
+          <div class="mt-2">
+            <app-star-rating [(rating)]="item.stars"></app-star-rating>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+      
+  }
+  @case ('nC') {
+    <div class="flex justify-center items-center w-full mb-6">
+      <div class="relative w-full max-w-xl">
+        <lucide-angular
+          name="search"
+          class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+        ></lucide-angular>
+        <input
+          type="text"
+          placeholder="Rechercher par numéro ou type..."
+          [(ngModel)]="searchText"
+          class="pl-12 pr-4 py-2 w-full text-gray-700 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+        />
+      </div>
+    </div>
+    
+    <h1 class="text-2xl font-bold text-gray-700 mb-8 text-center">
+      Liste des chambres avec clients et notes
+    </h1>
+    
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-4">
+      <div
+        *ngFor="let item of FilterRooms"
+        class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-transform transform hover:scale-[1.03]"
+      >
+        <img
+          [src]="'http://localhost:8080/api/chambres/image/'+item.imagePath.replace('uploadChambre/','')"
+          alt="Chambre"
+          class="w-full h-48 object-cover"
+        />
+        <div class="p-5">
+          <h2 class="text-xl font-semibold text-gray-800 mb-1">Type : {{ item.type }}</h2>
+          <p class="text-gray-600 mb-1">Numéro : <span class="font-medium">{{ item.numero }}</span></p>
+          <p class="text-orange-500 font-bold text-lg mb-4">{{ item.prix }} Ar / jour</p>
+    
+          <div *ngFor="let noteItem of tabNotes" >
+            <ng-container *ngIf="noteItem.chambre.id === item.id">
+              <div class="flex items-center space-x-3 mb-2">
+                <img
+                  [src]="'http://localhost:8080/api/client/image/'+noteItem.client.photo.replace('uploadClient/','')"
+                  alt="Client"
+                  class="w-10 h-10 rounded-full border-2 border-orange-400 object-cover"
+                />
+                <h3 class="text-gray-700 font-semibold">
+                  {{ noteItem.client.nom }} {{ noteItem.client.prenom }}
+                </h3>
+              </div>
+              <p class="text-gray-800 font-semibold mb-4">Note : {{ noteItem.notes }}</p>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  }
+  @default {
+
+   <!--Commencement-->
+<div class="container pt-2 " >
+  @if (isDispo) {
+    <button
+    (click)="isModalOpen = true"
+    class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 shadow-md cursor-pointer">
+      + Ajouter une chambre
+    </button>
+  
+
+      <button 
+      (click)="isDispo = false"
+      class="float-right bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 shadow-md cursor-pointer" 
+      >Liste des chambres indisponibles</button>
+  }
+  @if (!isDispo) {
+  <button
+  (click)="isDispo = true"
+  class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600 shadow-md cursor-pointer mb-3">
+    Listes des chambres disponibles
+  </button>
+}
+    <div
+  *ngIf="isModalOpen"
+  class="fixed inset-0 modalC bg-opacity-1  flex justify-center items-center z-50"
+  (click)="closeModal()"
+  >
+
+  <div class="bg-white p-8 rounded-lg shadow-lg w-full sm:w-96 modal-enter animate"
+  (click)="$event.stopPropagation()"
+
+  [ngClass]="{'modal-enter-active': isModalOpen, 'modal-leave-active': !isModalOpen}">
+    <h2 class="text-xl font-semibold text-orange-600 mb-4">{{isUpdate?'Modifier':'Ajouter'}} une chambre</h2>
+
+    <!-- Formulaire -->
+    <form (ngSubmit)="isUpdate?updateRoom(idData):addRoom()">
+      <div class="mb-4">
+        <label for="numero" class="block text-gray-700">Numéro de la chambre</label>
+        <input [(ngModel)]="dataRoom.numero" type="text" id="numero" name="numero" class="w-full p-2 mt-2 border border-gray-300 rounded" placeholder="Ex: 101" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="type" class="block text-gray-700">Type de chambre</label>
+        <select id="type" [(ngModel)]="dataRoom.type" name="type" class="w-full p-2 mt-2 border border-gray-300 rounded">
+          <option value="Standard">Standard</option>
+          <option value="Deluxe">Deluxe</option>
+          <option value="Suite">Suite</option>
+        </select>
+      </div>
+
+      <div class="mb-4">
+        <label for="prix"  class="block text-gray-700" >Prix par jour (Ar)</label>
+        <input type="number"  [(ngModel)]="dataRoom.prix" name="prix" id="prix" class="w-full p-2 mt-2 border border-gray-300 rounded" placeholder="Ex: 50000" required>
+      </div>
+
+      <div class="mb-4">
+        <label for="photo" class="block text-gray-700">Photo de la chambre</label>
+        <input type="file" accept="image/*" (change)="onFileSelected($event)" id="photo" class="w-full p-2 mt-2 border border-gray-300 rounded" required>
+      </div>
+      
+      
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-4">
+        <button
+          type="button"
+          (click)="closeModal()"
+          class=" cursor-pointer bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400">
+          Annuler
+        </button>
+        <button
+          type="submit"
+          class="cursor-pointer bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+          {{isUpdate?'Modifier':'Ajouter'}}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+@if (isDispo) {
+<div id="chambreDispo">
+
+@if(chambres.length!=0){
+  <!--Recherche-->
+  <div class="flex justify-center items-center w-full">
+  <div class="relative">
+  <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+  <input type="text" placeholder="Rechercher par numero ou type..." [(ngModel)]="searchText"
+  class="pl-12 pr-4 py-2 w-85 text-gray-500
+   border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+  >
+</div>
+</div>
+<!--Recherche-->
+  <h1 class="text-gray-900 text-xl mb-3">Listes des chambres disponibles</h1>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+
+  <div *ngFor="let chambre of  FilterRooms" class="transition-transform transform hover:scale-105 bg-white shadow-md rounded-lg overflow-hidden">
+    <img [src]="'http://localhost:8080/api/chambres/image/'+chambre.imagePath.replace('uploadChambre/','')" alt="Chambre" class="w-full h-48 object-cover">
+    <div class="p-4">
+      <h2 class="text-lg font-semibold">{{ chambre.type }}</h2>
+      <p class="text-gray-600">Numéro: {{ chambre.numero }}</p>
+      <p class="text-gray-700 font-bold">{{ chambre.prix }} Ar / jour</p>
+
+    </div>
+    <div class="p-4 flex justify-between">
+      <button (click)="setData(chambre.id,chambre.type,chambre.numero,chambre.prix)" class="cursor-pointer bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">Modifier</button>
+      <button (click)="deleteRoom(chambre.id)" class=" cursor-pointer bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">Supprimer</button>
+      <button
+      (click)="DetailsChambre(chambre.id,chambre.numero,chambre.type,chambre.prix,chambre.imagePath,chambre.disponible)"
+      class="cursor-pointer bg-orange-500 text-white px-3 py-1 rounded hover:bg-orange-600">Details</button>
+    </div>
+
+  </div>
+  @if (FilterRooms.length===0) {
+    <h1 class="text-2xl font-bold text-gray-600">Aucun resultat disponible!</h1>
+  }
+  </div>
+
+}@else {
+  <h3 class="text-xl">!--Listes des chambres vides--!</h3>
+}
+</div>
+}
+</div>
+@if (isDetail) {
+  <div (click)=" clickNotDetatil()" style="overflow: auto;"
+  class="fixed inset-0 modalC bg-opacity-1  flex justify-center items-center z-90">
+       
+    <app-sous-chambre [chambre]="chambr"  (monEvenement)="receiveClose($event)" ></app-sous-chambre>
+    <div class="bg-white p-10 rounded-lg" style="overflow: auto;">
+    @if (isDetail) {
+      <h1 class="text-2xl text-gray-900">Notes chambre</h1>
+      @for (item of tabStars; track $index) {
+        @if(item.chambre.id===chambr.id){
+        
+          <div class="flex">
+          <img [src]="'http://localhost:8080/api/client/image/'+item.client.photo.replace('uploadClient/','')" class="w-10 h-10 rounded-full" 
+        
+          alt="">
+          <h1 class="text-xl text-gray-800">{{ item.client.nom+" "+item.client.prenom}}</h1>
+        </div>
+      <app-star-rating [(rating)]="item.stars"></app-star-rating> <br>
+        }
+       
+      }
+    
+      <h1 class="text-2xl text-gray-900">Commentaires chambre</h1>
+      @for (item of tabCom; track $index) {
+        @if(item.chambre.id===chambr.id){
+          
+          <div class="flex">
+            <img [src]="'http://localhost:8080/api/client/image/'+item.client.photo.replace('uploadClient/','')" class="w-10 h-10 rounded-full" 
+          
+            alt="">
+            <h1 class="text-xl text-gray-800">{{ item.client.nom+" "+item.client.prenom}}</h1><br>
+          </div>
+          <ul>
+            <li>{{ item.notes }}</li>
+          </ul>
+        }
+      }
+     }
+    </div>
+  </div>
+}
+
+@if (!isDispo) {
+<div class="" id="chambreIndispo">
+<app-liste-cindispo></app-liste-cindispo>
+</div>
+}
+
+  
+    }
+  }   
+       
+  
+

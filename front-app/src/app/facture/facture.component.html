@@ -1,0 +1,43 @@
+<div class="overflow-auto">
+    <div class="flex justify-center items-center w-full" (click)="$event.stopPropagation()">
+        <div class="relative"  >
+        <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+        <input type="text" placeholder="Rechercher par nom ou prenom..." [(ngModel)]="searchText"
+        class="pl-12 pr-4 py-2 w-85 text-gray-500
+         border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+        >
+      </div>
+      </div>
+    <table class="min-w-full border border-gray-300 mt-3">
+      <thead class="bg-gray-10">
+        <tr>
+          <th class="border border-gray-400 px-4 py-2">Nom fichier</th>
+          <th class="border border-gray-400 px-4 py-2">Type fichier</th>
+          <th class="border border-gray-400 px-4 py-2">Nom client</th>
+          <th class="border border-gray-400 px-4 py-2">prenom client</th>
+          <th class="border border-gray-400 px-4 py-2">email</th>
+          <th class="border border-gray-400 px-4 py-2">action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of filterData; track $index) {
+          <tr class="hover:bg-gray-50">
+            <td class="border border-gray-400 px-4 py-2">{{item.fileName}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.fileType}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.client.nom}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.client.prenom}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.client.email}}</td>
+            <td class="border border-gray-400 px-4 py-2">
+              <button class="bg-orange-500 text-white px-3 py-1 rounded-lg hover:bg-orange-600 cursor-pointer ml-10"
+              (click)="deleteFac(item.id)"
+              >
+            <lucide-icon name="trash"></lucide-icon>
+            </button>
+            </td>
+           </tr>  
+        }
+        @if (filterData.length==0) {
+          <h1 class="text-2xl font-bold text-gray-600">Aucun resultat disponible!</h1>
+        }
+      </tbody>
+    </table>

@@ -1,0 +1,65 @@
+.li li{
+    line-height: 57px;
+}
+.ecran {
+ background-image: url("/images/carousel-1.jpg");
+ background-size: cover;
+ background-repeat: no-repeat;
+ overflow: auto;
+
+}
+.modal {
+    display: block; /* Hidden by default */
+ 
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+  }
+
+  .modalT {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    
+    padding-top: 60px;
+  }
+  .cot{
+    margin-top: -50px;
+  }
+   .word{
+    opacity: 0;
+    animation: showWord 3s  forwards;
+  }
+
+  @keyframes showWord {
+    from{opacity: 0;transform: translateY(-10px);}
+    to{
+        opacity: 1; transform: translateY(0);
+    }
+  }
+  .word:nth-child(1){
+   animation-delay: 0.1s;
+  }
+  .word:nth-child(2){
+    animation-delay: 0.2s;
+  }
+  .word:nth-child(3){
+    animation-delay: 0.3s;
+  }
+  .word:nth-child(4){
+    animation-delay: 0.4s;
+  }
+  .word:nth-child(5){
+    animation-delay: 0.5s;
+  }
+  
+
+   

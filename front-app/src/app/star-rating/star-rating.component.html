@@ -1,0 +1,14 @@
+<div class="flex space-x-1">
+   <span
+   *ngFor="let star  of [1,2,3,4,5]; let i=index"
+   (click)="rate(i)"
+   class="cursor-pointer hover:scale-100 transition-transform duration-200"
+   >
+  <lucide-angular name="star" *ngIf="i<rating" class="w-6 h-6 text-white bg-yellow-500 rounded-full"
+  
+  ></lucide-angular>
+  <lucide-angular 
+  fill="none"
+  name="star" *ngIf="i>=rating" class="w-6 h-6 text-yellow-500"></lucide-angular>
+   </span>
+</div>

@@ -1,0 +1,10 @@
+# Ignorer les node_modules du front-end
+front-app/node_modules/
+back-app/node_modules/
+
+# Autres dossiers à ignorer si présents
+*.log
+.env
+dist/
+build/
+.DS_Store

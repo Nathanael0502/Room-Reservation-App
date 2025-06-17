@@ -1,0 +1,72 @@
+<app-bar-nav></app-bar-nav>
+
+<div class="p-6 bg-gray-100 mt-12">
+  <h1 class="text-2xl font-bold mb-2">Dashboard</h1>
+
+  <!-- Statistiques -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold">Revenus</h2>
+      <p class="text-2xl font-bold text-green-600">Ar {{ modelDash.revenus }},00</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold">Chambres</h2>
+      <p class="text-2xl font-bold">{{ modelDash.rooms }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold">Utilisateurs</h2>
+      <p class="text-2xl font-bold">{{ modelDash.users }}</p>
+    </div>
+    <div class="bg-white p-6 rounded-lg shadow-md">
+      <h2 class="text-lg font-semibold">Réservations</h2>
+      <p class="text-2xl font-bold">{{ modelDash.reservation }}</p>
+    </div>
+  </div>
+<div class="flex mt-2 ">
+  <div class="max-w-4xl mx-auto p-6 bg-white shadow-lg rounded-lg mr-5">
+    <!-- En-tête -->
+    <div class="flex items-center justify-between border-b pb-4">
+      <h2 class="text-2xl font-bold text-gray-800">Réservations d’aujourd’hui</h2>
+      <span class="bg-blue-500 text-white text-lg font-semibold px-4 py-1 rounded-full">
+        {{ modelDash.reservRT }} réservations
+      </span>
+    </div>
+  
+    <!-- Liste des réservations -->
+    
+    <div class="mt-4">
+      <ul class="divide-y divide-gray-200">
+        <li *ngFor="let reservation of tabReservT" class="py-4 flex items-center">
+          <div class="flex-1">
+            <p class="text-lg font-semibold text-gray-900">IdResrv: {{ reservation.id }}</p>
+            <p class="text-lg font-semibold text-gray-900">Nom: {{ reservation.client.nom }}</p>
+            <p class="text-lg font-semibold text-gray-900">Prenom: {{ reservation.client.prenom }}</p>
+            <p class="text-sm text-gray-500">Chambre n° {{ reservation.chambre.numero }} | {{ reservation.dateDebut }}</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+  </div>
+  <div style="width: 87%; margin:auto;" class="bg-white rounded-lg">
+    <canvas baseChart
+    [data]="linearChartData"
+    [options]="lineChartOptions"
+    [type]="lineChartType"
+    >
+
+    </canvas>
+  </div>
+  
+</div>
+<div style="display: block;" class="bg-white mt-5 h-120 mb-5">
+  <canvas baseChart
+    [datasets]="barChartData"
+    [labels]="barChartLabels"
+    [options]="barChartOptions"
+    [type]="barChartType">
+  </canvas>
+</div>
+
+  <!-- Graphique des revenus -->
+ 

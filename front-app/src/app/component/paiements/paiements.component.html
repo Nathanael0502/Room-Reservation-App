@@ -1,0 +1,154 @@
+<app-bar-nav></app-bar-nav>
+
+
+<div class="p-9 bg-gray-100 min-h-screen flex flex-col items-center mt-10" >
+
+
+
+  <div class="w-full max-w-7xl bg-white rounded-xl shadow-lg p-6">
+
+    <div class="flex justify-between items-center mb-4" style="margin-top: 20px;">
+      <h2 class="text-2xl font-semibold text-gray-700">Liste des Paiements
+
+      </h2>
+      <div class="flex justify-left items-center w-full">
+        <div class="relative">
+        <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+        <input type="text" placeholder="Rechercher par nom ou prenom..." [(ngModel)]="searchText"
+        class="pl-12 pr-4 py-2 w-85 text-gray-500
+         border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+      
+        >
+      </div>
+      </div>
+      <form (submit)="isUpdate?UpdatePay(idP):SendPay()" style="display: flex;">
+      <input type="text"   readonly style="outline: none;border:none;margin-left:-350px" class="w-30" placeholder="Reservation_ID :">
+        <input 
+          class="w-full p-2 mt-2 border border-gray-300 rounded text-black" type="number" readonly
+          [(ngModel)]="DataPay.reservationID"
+          (click)="isShowModal = true" 
+       id="rid" name="reservationId"  
+           required><br>
+     
+         <input type="text" readonly style="outline: none;border:none" class="w-30 ml-1" placeholder="Mode Paiement: ">
+        <select style="margin-right: 50px;"
+         class="w-60 p-2 mt-2 border border-gray-300 rounded" name="modePaiement" id="mp" [(ngModel)]="DataPay.modePaiement">
+          <option value="MVOLA">MVOLA</option>
+          <option value="AIRTEL MONEY">AIRTEL MONEY</option>
+          <option value="ORANGE MONEY">ORANGE MONEY</option>
+          <option value="EN ESPECE">EN ESPECE</option>
+          <option value="ACCESS BANK">ACCESS BANK</option>
+          <option value="BNI">BNI</option>
+          <option value="BOA">BOA</option>
+          <option value="BFV">BFV</option>
+        </select>
+
+      <button type="submit" class="cursor-pointer bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600">{{isUpdate?'Modifier':'Ajouter'}}</button>
+
+      </form>
+      @if (isUpdate) {
+      <button (click)="cancelBtn()"
+      class="cursor-pointer bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Annuler</button>
+      }
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full border border-gray-300  text-gray-700">
+        <thead class="bg-gray-10">
+          <tr>
+            <th class="border border-gray-400 px-4 py-2">IdPay</th>
+
+            <th class="border border-gray-400  px-4 py-2">idReservat°</th>
+            <th class="border border-gray-400 px-4 py-2">NomCli</th>
+            <th class="border border-gray-400 px-4 py-2">PrenomCli</th>
+            <th class="border border-gray-400 px-4 py-2">NumChambre</th>
+            <th class="border border-gray-400 px-4 py-2">PrixTTC(Ar)</th>
+            <th class="border border-gray-400 px-4 py-2">ModePay</th>
+            <th class="border border-gray-400 px-4 py-2">Statut</th>
+            <th class="border border-gray-400 px-4 py-2">DatePay</th>
+            <th class="border border-gray-400 px-4 py-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of filterData; let i = index" class="hover:bg-gray-50">
+            <td class="border border-gray-400 px-4 py-2">{{ item.id }}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.reservation.id}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.reservation.client.nom}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.reservation.client.prenom}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.reservation.chambre.numero}}</td>
+            <td class=" border border-gray-400 px-4 py-2">{{item.price}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.methode}}</td>
+            <td class="border border-gray-400 px-4 py-2">{{ item.statut }}</td>
+            <td class="border border-gray-400 px-4 py-2">{{item.datePaiement}}</td>
+            <td class="border border-gray-400 px-4 py-2">
+              <button
+                (click)="showDetail(item.id,item.reservation.id,item.methode)"
+                class="bg-blue-500 cursor-pointer text-white px-3 py-1 rounded-lg hover:bg-blue-600">
+                  M
+              </button>
+              <button
+              (click)="DeletePay(item.id)"
+              class="bg-red-500 text-white cursor-pointer px-3 py-1 rounded-lg hover:bg-red-600">
+              S
+            </button>
+           <button
+           (click)="Facturation(item.reservation.client.nom,item.reservation.client.prenom,item.reservation.chambre.numero,
+           item.nbJour,item.reservation.chambre.prix,item.price,item.reservation.chambre.type,item.datePaiement)"
+           class="bg-green-500 text-white cursor-pointer px-3 py-1 rounded-lg hover:bg-green-600"
+            >
+              F
+            </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      @if (filterData.length==0) {
+        <h1 class="text-2xl font-bold text-gray-600">Aucun resultat disponible!</h1>
+      }
+    </div>
+  </div>
+</div>
+
+@if (isShowModal) {
+<div class="modal" (click)="isShowModal = false">
+  <div class="modal-content animate rounded-lg p-2">
+    <div class="flex justify-left items-center w-full"  (click)="$event.stopPropagation()">
+      <div class="relative">
+      <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  text-gray-500"></lucide-angular>
+      <input type="text" placeholder="Rechercher par nom ou prenom..." [(ngModel)]="searchText"
+      class="pl-12 pr-4 py-2 w-85 text-gray-500
+       border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500"
+    
+      >
+    </div>
+    </div>
+   <h2 class="text-2xl font-bold text-gray-700 ">Liste des clients</h2>
+    <table class="min-w-full text-gray-600 border "  (click)="$event.stopPropagation()">
+      <thead class="bg-gray-100">
+        <tr class="border border-gray-300 h-10">
+          <th>Nom</th>
+          <th>Prenom</th>
+          <th>NumeroChambre</th>
+          <th>Id Reservat°</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+       @for (client of filterT; track $index) {
+        <tr class="border border-gray-300 h-8">
+          <td>{{ client.client.nom }}</td>
+          <td>{{ client.client.prenom }}</td>
+          <td>{{client.chambre.numero }}</td>
+          <td>{{client.id }}</td>
+          <td>
+            <button (click)="ajoutRes(client.id)"
+            class="bg-green-500 text-white px-3 py-1 rounded-lg hover:bg-green-600 cursor-pointer">
+              Ajouter
+            </button>
+          </td>
+        </tr>
+       }
+      </tbody>
+    </table>
+  </div>
+</div>
+}

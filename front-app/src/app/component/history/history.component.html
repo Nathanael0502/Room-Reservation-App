@@ -1,0 +1,32 @@
+<app-bar-nav></app-bar-nav>
+<div class="p-6 bg-gray-100  mt-25">
+  <div class="flex justify-center items-center w-full " >
+    <div class="relative mb-4"  >
+    <lucide-angular name="search" class="absolute left-3 top-1/2 transform -translate-y-1/2  "></lucide-angular>
+    <input type="text" placeholder="Rechercher ..." [(ngModel)]="searchText"
+    class="pl-12 pr-4 py-2 w-85 
+     border border-gray-100 rounded-full shadow-lg focus:outline-none focus:ring-blue-500 "
+    >
+  </div>
+  </div>
+    <h1 class="text-2xl text-orange-500 font-bold mb-4">Historiques</h1>
+   
+    <div class="bg-white rounded-lg shadow p-4">
+    
+      <h2 class="text-xl font-semibold mb-2">Historiques</h2>
+      <ul class="space-y-2">
+        <li
+          *ngFor="let item of SearchHistory"
+          class="p-2 border-b border-gray-200 flex justify-between items-center"
+        >
+          <div class="flex items-center">
+            <span class="mr-2 text-gray-500">
+          <lucide-icon name="Clock"></lucide-icon>
+            </span>
+            <span>{{item.historique}}</span>
+          </div>
+          <span class="text-sm text-gray-400">{{ item.dateInsertion | date:'dd/MM/yyyy HH:mm' }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>

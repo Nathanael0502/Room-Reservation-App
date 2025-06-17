@@ -1,0 +1,120 @@
+
+
+  <nav class="bg-white p-4 shadow-md fixed top-0 left-0 w-full">
+    <div class="max-w-7xl mx-auto flex justify-between items-center">
+    
+      
+      <div class="relative flex">
+        @if (!clientData.photo) {
+        <img src="images/vecteezy_green-meadow-and-cloudy-skies-panoramic-view-3d-illustration_2097796.jpg" alt="Picture" class="w-10 h-10 rounded-full border-2 border-orange-500 cursor-pointer">
+        }@else {
+          <img [src]="'http://localhost:8080/api/client/image/'+clientData.photo.replace('uploadClient/','')" alt="PDP" 
+          (click)="varDetailCli = true"
+          class="w-10 h-10 rounded-full border-2 border-orange-500 cursor-pointer">
+        }
+        <h1 class="text-xl font-semibold text-gray-700">{{clientData.nom+"   "+clientData.prenom}}</h1>
+      </div>
+      
+     
+      <h1 class="text-orange-500 text-xl font-semibold ml-5">Gestion d'Hôtel</h1>
+      <ul class="flex flex-grow justify-center space-x-8 text-grey-300" >
+
+        <li><a href="/dashboard" class="hover:text-orange-500 cursor-pointer ">Dashboard</a></li>
+        <li><a routerLink="/chambre" class="hover:text-orange-500 cursor-pointer">Chambres</a></li>
+        <li><a routerLink="/client" class="hover:text-orange-500 cursor-pointer">Clients</a></li>
+        <li><a routerLink="/reservation" class="hover:text-orange-500 cursor-pointer">Réservations</a></li>
+        <li><a routerLink="/paiement" class="hover:text-orange-500 cursor-pointer">Paiements </a></li>
+        <li><a routerLink="/chatMess" class="hover:text-orange-500 cursor-pointer">Chat</a></li>
+      </ul>
+
+      <button class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-red-700 ml-4 cursor-pointer"
+      (click)="LogOut()"
+      >Deconnexion</button>
+    </div>
+    <div class="relative ">
+      <button class="text-gray-900 focus:outline-none cursor-pointer" (click)="onMenu()">
+        <lucide-icon name="Menu"></lucide-icon>
+      </button>
+      @if (menu) {
+      <div class=" mt-2 w-48 bg-white rounded-lg shadow-lg z-10 ">
+        <ul class="py-2">
+          <li>
+            <a routerLink="/notifications" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Notifications</a>
+          </li>
+          <li>
+            <a routerLink="/history" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Historiques</a>
+          </li>
+          <li>
+            <a routerLink="/facture" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Factures</a>
+          </li>
+        </ul>
+      </div>
+    }
+    </div>
+  </nav>
+  @if (varDetailCli) {
+    <div class="modalT">
+    <div  style="margin-top: -60px;"
+    class="cot h-screen  flex justify-center items-center  backdrop-blur-sm  bg-cover bg-center bg-no-repeat">
+      <div class= "bg-white p-8 rounded-lg shadow-lg w-full sm:w-140 form-container">
+          <h2 class="text-2xl font-semibold text-center text-gray-700 mb-6">Informations sur Vous</h2>
+          <form style="display: flex;" (submit)="updateCli()" >
+             <div class="droite" >
+              <div class="mb-3">
+                <label for="Nom" class="block text-gray-600">Nom</label>
+                <input type="text" id="nom" name="nom" [(ngModel)]="clientData.nom"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="Randrianjafy" required>
+            </div>
+            <div class="mb-3">
+              <label for="prenom" class="block text-gray-600">Prenom</label>
+              <input type="text" id="prenom" name="prenom" [(ngModel)]="clientData.prenom"
+                  class="sm:w-60 w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  placeholder="Nathanaël" required>
+          </div>
+          <div class="mb-3">
+            <label for="email" class="block text-gray-600">Adresse e-mail</label>
+            <input type="email" id="email" name="email" [(ngModel)]="clientData.email"
+                class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                placeholder="natha@gmail.com" required>
+        </div>
+              <button type="submit"
+                  class="w-full bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200">
+                 Modifier
+              </button>
+            </div>
+            <div class="gauche" style="margin-left: 20px;">
+              <div class="mb-3">
+                <label for="telephone"  class="block text-gray-600 sm:w-60">Telephone</label>
+                <input type="text" id="telephone" name="telephone" [(ngModel)]="clientData.telephone"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="+261338767890" required>
+            </div><br>
+            <div class="mb-3">
+              <label for="photo"  class="block text-gray-600 sm:w-60">
+                Choisir une photo
+              <input type="file" id="photo" name="photo" class="cursor-pointer w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500" accept="image/*"
+                   (change)="onSelectedImage($event)"
+            >
+          </label><br><br>
+    
+          @if (!clientData.photo) {
+          <p class="block text-gray-600 sm:w-60" >Aucun image</p>
+          }@else {
+          
+            <img [src]="'http://localhost:8080/api/client/image/'+clientData.photo.replace('uploadClient/','')"  class="w-60 h-60 rounded-lg " alt="">
+          }
+          </div>
+            </div>
+          </form>
+          <div class="mt-4 text-center">
+            <p class="text-gray-600"  (click)="varDetailCli = false" class="w-full bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-20">Quitter</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    }
+
+
+
+

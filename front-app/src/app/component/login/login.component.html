@@ -1,0 +1,34 @@
+
+<div class="login w-screen h-screen  flex justify-center items-center min-h-screen   bg-cover bg-center bg-no-repeat">
+  <div class="modal">
+    <div class= "backdrop-blur-sm  p-8 rounded-lg shadow-lg w-full sm:w-96 form-container">
+      <h1 class="text-red-500 " style="text-align: center;" *ngIf="testChamp">Erreur d'authentificaion</h1>
+        <h2 class="text-2xl font-semibold text-center text-white mb-6">Connexion</h2>
+        <form (submit)="login()">
+            <div class="mb-4">
+                <label for="email" class="block text-white">Adresse e-mail</label>
+                <input type="email" [(ngModel)]="email" id="email" name="email"
+                    class="w-full px-4 py-2 border  text-white border-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="exemple@domaine.com" required>
+            </div>
+            <div class="mb-6">
+                <label for="password"  class="block text-white">Mot de passe</label>
+                <input type="password" [(ngModel)]="password" id="password" name="password"
+                    class="w-full text-white px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    placeholder="********" required>
+            </div>
+            <button type="submit"
+                class="w-full bg-orange-600 cursor-pointer text-white py-2 rounded-md hover:bg-orange-700 transition duration-200">
+                Se connecter
+            </button>
+        </form>
+        <div class="mt-4 text-center">
+          <p class="text-white">Pas encore de compte ? <a routerLink="/sign-in" class="text-orange-600"
+            style="text-shadow:1px 1px 1px rgba(250, 207, 167, 0.767);"
+            >Inscrivez-vous</a></p>
+      </div>
+    </div>
+</div>
+</div>
+
+
